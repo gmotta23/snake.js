@@ -1,13 +1,19 @@
+const { movements } = require("./movement");
+
 const rows = 22;
 const columns = 80;
 const snakePosition = {
-  head: [1, 2],
-  body: [1, 1],
+  position: [1, 2],
+  next: {
+    position: [1, 1],
+    next: null,
+  },
 };
 const applePosition = [2, 2];
 
 function drawMap(movement) {
   const map = [];
+  setSnakePosition(movement);
 
   for (let row = 0; row <= rows; row++) {
     map.push([]);
@@ -20,18 +26,57 @@ function drawMap(movement) {
   return mapToString(map);
 }
 
+function getSnakeDirection(movement) {
+  let direction = [0, 1];
+  switch (movement) {
+    case movements.up:
+      direction = [-1, 0];
+      break;
+    case movements.right:
+      direction = [0, 1];
+      break;
+    case movements.down:
+      direction = [1, 0];
+      break;
+    case movements.left:
+      direction = [0, -1];
+  }
+  return direction;
+}
+
 function setSnakePosition(movement) {
-  // get snake position
-  // update snake position
-  // set snakePosition
+  const direction = getSnakeDirection(movement);
+
+  snakePosition.next.position = JSON.parse(
+    JSON.stringify(snakePosition.position)
+  );
+
+  snakePosition.position[0] += direction[0];
+  snakePosition.position[1] += direction[1];
+
+  // snakePosition.next.position = snakePosition.position;
+
+  // let current = snakePosition;
+  // let next = current.next;
+
+  // while (next) {
+  //   next.position = current.position;
+
+  //   current = next;
+  //   next = next.next;
+  // }
 }
 
 function getSnakePosition() {
   return snakePosition;
 }
 
+function setApplePosition() {
+  // return applePosition;
+}
+
 function getApplePosition() {
-  return [3, 3];
+  return applePosition;
 }
 
 function handleCellDraw(row, column) {
@@ -53,10 +98,17 @@ function handleCellDrawSnake(row, column) {
   const head = "@";
   const body = "o";
 
-  if (snakePosition.head[0] === row && snakePosition.head[1] === column) {
+  if (
+    snakePosition.position[0] === row &&
+    snakePosition.position[1] === column
+  ) {
     return head;
   }
-  if (snakePosition.body[0] === row && snakePosition.body[1] === column) {
+  // console.log(snakePosition.next.position, snakePosition.position);
+  if (
+    snakePosition.next.position[0] === row &&
+    snakePosition.next.position[1] === column
+  ) {
     return body;
   }
   return null;

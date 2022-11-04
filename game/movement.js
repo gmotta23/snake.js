@@ -10,7 +10,7 @@ const movements = Object.freeze({
   left: "left",
 });
 
-let movement = movements.up;
+let movement = movements.right;
 
 function setMovement(m) {
   movement = m;
@@ -57,4 +57,4 @@ const handleKeyPress = (s, key) => {
 
 process.stdin.on("keypress", handleKeyPress);
 
-module.exports = { getMovement };
+module.exports = { getMovement, movements };
