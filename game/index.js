@@ -1,10 +1,12 @@
-const { get_movement } = require("./movement");
+const { getMovement } = require("./movement");
+const { drawMap } = require("./map");
 
 function start() {
   setInterval(() => {
-    movement = get_movement();
+    movement = getMovement();
     process.stdout.write("\x1Bc");
-    process.stdout.write(movement);
+    // drawMap(movement);
+    process.stdout.write(drawMap(movement));
   }, 200);
 }
 

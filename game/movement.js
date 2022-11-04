@@ -12,30 +12,43 @@ const movements = Object.freeze({
 
 let movement = movements.up;
 
-function set_movement(m) {
+function setMovement(m) {
   movement = m;
 }
 
-function get_movement() {
+function getMovement() {
   return movement;
 }
 
 const handleKeyPress = (s, key) => {
   switch (key.name) {
     case "w":
-      set_movement(movements.up);
+      setMovement(movements.up);
       break;
     case "a":
-      set_movement(movements.left);
+      setMovement(movements.left);
       break;
     case "s":
-      set_movement(movements.down);
+      setMovement(movements.down);
       break;
     case "d":
-      set_movement(movements.right);
+      setMovement(movements.right);
+      break;
+    case "up":
+      setMovement(movements.up);
+      break;
+    case "left":
+      setMovement(movements.left);
+      break;
+    case "down":
+      setMovement(movements.down);
+      break;
+    case "right":
+      setMovement(movements.right);
       break;
     case "c":
       if (key.ctrl) {
+        // process.stdout.write("\x1Bc");
         process.exit();
       }
       break;
@@ -44,4 +57,4 @@ const handleKeyPress = (s, key) => {
 
 process.stdin.on("keypress", handleKeyPress);
 
-module.exports = { get_movement };
+module.exports = { getMovement };
