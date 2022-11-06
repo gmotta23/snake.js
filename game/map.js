@@ -6,7 +6,10 @@ const snakePosition = {
   position: [1, 2],
   next: {
     position: [1, 1],
-    next: null,
+    next: {
+      position: [1, 0],
+      next: null,
+    },
   },
 };
 const applePosition = [2, 2];
@@ -47,24 +50,18 @@ function getSnakeDirection(movement) {
 function setSnakePosition(movement) {
   const direction = getSnakeDirection(movement);
 
-  snakePosition.next.position = JSON.parse(
-    JSON.stringify(snakePosition.position)
-  );
+  let snakeSnapshot = JSON.parse(JSON.stringify(snakePosition));
+
+  let key = snakePosition.next;
+
+  while (key) {
+    key.position = snakeSnapshot.position;
+    key = key.next;
+    snakeSnapshot = snakeSnapshot.next;
+  }
 
   snakePosition.position[0] += direction[0];
   snakePosition.position[1] += direction[1];
-
-  // snakePosition.next.position = snakePosition.position;
-
-  // let current = snakePosition;
-  // let next = current.next;
-
-  // while (next) {
-  //   next.position = current.position;
-
-  //   current = next;
-  //   next = next.next;
-  // }
 }
 
 function getSnakePosition() {
@@ -108,6 +105,12 @@ function handleCellDrawSnake(row, column) {
   if (
     snakePosition.next.position[0] === row &&
     snakePosition.next.position[1] === column
+  ) {
+    return body;
+  }
+  if (
+    snakePosition.next.next.position[0] === row &&
+    snakePosition.next.next.position[1] === column
   ) {
     return body;
   }
