@@ -91,7 +91,7 @@ function handleCellDraw(row, column) {
 }
 
 function handleCellDrawSnake(row, column) {
-  const snakePosition = getSnakePosition();
+  const snakePosition = JSON.parse(JSON.stringify(getSnakePosition()));
   const head = "@";
   const body = "o";
 
@@ -101,18 +101,15 @@ function handleCellDrawSnake(row, column) {
   ) {
     return head;
   }
-  // console.log(snakePosition.next.position, snakePosition.position);
-  if (
-    snakePosition.next.position[0] === row &&
-    snakePosition.next.position[1] === column
-  ) {
-    return body;
-  }
-  if (
-    snakePosition.next.next.position[0] === row &&
-    snakePosition.next.next.position[1] === column
-  ) {
-    return body;
+
+  while (snakePosition.next) {
+    if (
+      snakePosition.next.position[0] === row &&
+      snakePosition.next.position[1] === column
+    ) {
+      return body;
+    }
+    snakePosition.next = snakePosition.next.next;
   }
   return null;
 }
