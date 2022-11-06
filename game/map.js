@@ -49,6 +49,11 @@ function getSnakeDirection(movement) {
 function setSnakePosition(movement) {
   const direction = getSnakeDirection(movement);
 
+  updateBodyPosition();
+  setSnakeHeadPosition(direction);
+}
+
+function updateBodyPosition() {
   let snakeSnapshot = JSON.parse(JSON.stringify(snakePosition));
 
   let key = snakePosition.next;
@@ -58,9 +63,27 @@ function setSnakePosition(movement) {
     key = key.next;
     snakeSnapshot = snakeSnapshot.next;
   }
+}
 
+function setSnakeHeadPosition(direction) {
   snakePosition.position[0] += direction[0];
   snakePosition.position[1] += direction[1];
+
+  if (snakePosition.position[0] > rows) {
+    snakePosition.position[0] = 0;
+  }
+
+  if (snakePosition.position[0] < 0) {
+    snakePosition.position[0] = rows;
+  }
+
+  if (snakePosition.position[1] > columns) {
+    snakePosition.position[1] = 0;
+  }
+
+  if (snakePosition.position[1] < 0) {
+    snakePosition.position[1] = columns;
+  }
 }
 
 function getSnakePosition() {
