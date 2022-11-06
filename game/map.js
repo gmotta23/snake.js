@@ -1,15 +1,14 @@
+const { randomCoordinate } = require("./math");
 const { movements } = require("./movement");
 
-const rows = 22;
-const columns = 80;
+const rows = process.stdout.rows;
+const columns = process.stdout.columns;
+const snakeHead = randomCoordinate(rows, columns);
 const snakePosition = {
-  position: [1, 2],
+  position: snakeHead,
   next: {
-    position: [1, 1],
-    next: {
-      position: [1, 0],
-      next: null,
-    },
+    position: [snakeHead[0], snakeHead[1] + 1],
+    next: null,
   },
 };
 const applePosition = [2, 2];
