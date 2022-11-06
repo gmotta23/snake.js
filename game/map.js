@@ -1,8 +1,8 @@
 const { randomCoordinate } = require("./math");
 const { movements } = require("./movement");
 
-const rows = process.stdout.rows;
-const columns = process.stdout.columns;
+const rows = process.stdout.rows - 2;
+const columns = process.stdout.columns - 2;
 const snakeHead = randomCoordinate(rows, columns);
 const snakePosition = {
   position: snakeHead,
@@ -11,7 +11,7 @@ const snakePosition = {
     next: null,
   },
 };
-const applePosition = [2, 2];
+let applePosition = randomCoordinate(rows, columns);
 
 function drawMap(movement) {
   const map = [];
@@ -48,9 +48,36 @@ function getSnakeDirection(movement) {
 
 function setSnakePosition(movement) {
   const direction = getSnakeDirection(movement);
-
+  handleAppleEating(movement);
   updateBodyPosition();
   setSnakeHeadPosition(direction);
+}
+
+function getSnakeTail() {
+  let current = snakePosition.next;
+  let tail = null;
+
+  while (current) {
+    if (current.next === null) {
+      tail = current;
+    }
+    current = current.next;
+  }
+  return tail;
+}
+
+function handleAppleEating() {
+  if (
+    snakePosition.position[0] === applePosition[0] &&
+    snakePosition.position[1] === applePosition[1]
+  ) {
+    setApplePosition();
+    let tail = getSnakeTail();
+    tail.next = {
+      position: tail.position,
+      next: null,
+    };
+  }
 }
 
 function updateBodyPosition() {
@@ -91,7 +118,7 @@ function getSnakePosition() {
 }
 
 function setApplePosition() {
-  // return applePosition;
+  applePosition = randomCoordinate(rows, columns);
 }
 
 function getApplePosition() {

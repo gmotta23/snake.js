@@ -48,7 +48,7 @@ const handleKeyPress = (s, key) => {
       break;
     case "c":
       if (key.ctrl) {
-        // process.stdout.write("\x1Bc");
+        process.stdout.write("\x1Bc");
         process.exit();
       }
       break;
